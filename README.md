@@ -24,11 +24,15 @@
 docker compose up <name>
 ```
 
+TODO
+
 
 #### Group Members:
 ```
 - Mary Adib
 - Ömer Ülgen
+- Jonathan Hombroek
 - Dániel Szabó
 - Ákos Makács
 ```
+amslkfamslkdmaskldmaslkmadlsak
