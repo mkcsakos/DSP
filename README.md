@@ -17,6 +17,13 @@
 - Periodically, we must talk through our findings, then we should decide on what should go into the common `Research` folder. The `Research` folder should not be modified without , however, your personal folder can contain anything you find interesting.
 - **Note that no big files, datasets, etc (larger than a couple of Mb at max, but mostly a file should be in the Kb region) should be uploaded to git. Large files should be collected via links, or uploaded to google docs (etc.) for now if you have no permanent link for them.**
 
+### Docker Environment:
+- Every docker environment, for every model we try has a dedicated folder, in which there are the docker files.
+- Start the docker environment with the following command:
+```
+docker compose up <name>
+```
+
 
 #### Group Members:
 ```
