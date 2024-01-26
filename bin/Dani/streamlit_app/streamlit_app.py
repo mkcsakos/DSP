@@ -9,6 +9,7 @@ from pandas.api.types import (
     is_numeric_dtype,
     is_object_dtype,
 )
+import time
 
 
 @st.cache_data
@@ -18,6 +19,22 @@ def load_data():
     return data
 
 df = load_data()
+
+
+if 'clicked' not in st.session_state:
+    st.session_state.clicked = False
+
+def set_clicked():
+    st.session_state.clicked = True
+
+def run_bar():
+    progress_text = "Operation in progress. Please wait."
+    my_bar = st.progress(0, text=progress_text)
+
+    for percent_complete in range(100):
+        time.sleep(0.5)
+        my_bar.progress(percent_complete + 1, text=progress_text)
+    time.sleep(1)
 
 
 
@@ -99,8 +116,8 @@ def filter_dataframe(df: pd.DataFrame) -> pd.DataFrame:
 
 
 with st.sidebar:
-    menu = option_menu("Main Menu", ['Drug Encyclopedia', 'Sentiment Analysis', 'Map', 'Popular Drugs Ranking', 'Inspect Data'], 
-    icons=['book', 'emoji-smile-upside-down', 'map-fill', 'info', 'clipboard2-data-fill'], menu_icon="cast", default_index=1)
+    menu = option_menu("Main Menu", ['Drug Encyclopedia', 'Sentiment Analysis', 'Map', 'Popular Drugs Ranking', 'Train model', 'Inspect Data'], 
+    icons=['book', 'emoji-smile-upside-down', 'map-fill', 'info', 'info', 'clipboard2-data-fill'], menu_icon="cast", default_index=1)
 
 
 
@@ -133,6 +150,32 @@ elif menu == 'Popular Drugs Ranking':
     st.title('Popular Drugs Ranking')
     drug_count = df['Identified Drug Type'].value_counts().head(10)  # Show top 10
     st.bar_chart(drug_count)
+    # st.dataframe(filter_dataframe(df))
+
+
+elif menu == 'Train model':
+    st.title('Train model')
+    st.button('Upload File', on_click=set_clicked)
+    if st.session_state.clicked:
+        uploaded_file = st.file_uploader("Choose a file")
+        print(uploaded_file)
+        if uploaded_file is not None:
+            # print(uploaded_file)
+            st.write("You selected the file:", uploaded_file.name)
+            st.dataframe(filter_dataframe(pd.read_csv(uploaded_file)))
+
+
+    st.button('Train',type='primary', on_click=run_bar)
+
+    # progress_text = "Operation in progress. Please wait."
+    # my_bar = st.progress(0, text=progress_text)
+
+    # for percent_complete in range(100):
+    #     time.sleep(0.5)
+    #     my_bar.progress(percent_complete + 1, text=progress_text)
+    # time.sleep(1)
+
+
 
 elif menu == 'Inspect Data':
     st.title('Inspect Data')
