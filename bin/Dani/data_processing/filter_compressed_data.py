@@ -1,20 +1,24 @@
-import os
 import json
-import sys
-import csv
 from datetime import datetime
-import pip
-import pickle
-
-# def install(package):
-#     if hasattr(pip, 'main'):
-#         pip.main(['install', package])
-#     else:
-#         pip._internal.main(['install', package])
-
-# install('zstandard')
-
 import zstandard
+from pymongo.mongo_client import MongoClient
+
+uri = "mongodb://danielsz:ysDC3xbgKOj863d7@ac-noqw4xe-shard-00-00.qqrkswo.mongodb.net:27017,ac-noqw4xe-shard-00-01.qqrkswo.mongodb.net:27017,ac-noqw4xe-shard-00-02.qqrkswo.mongodb.net:27017/?ssl=true&replicaSet=atlas-3kz2n9-shard-0&authSource=admin&retryWrites=true&w=majority"
+
+# Create a new client and connect to the server
+client = MongoClient(uri)
+db = client['dsp']
+collection = db['reddit_raw']
+
+
+# Send a ping to confirm a successful connection
+try:
+    client.admin.command('ping')
+    print("Pinged your deployment. You successfully connected to MongoDB!")
+except Exception as e:
+    print(e)
+
+
 
 subreddit_list = ['drugs',
 				'trees',
@@ -46,7 +50,7 @@ def read_and_decode(reader, chunk_size, max_window_size, previous_chunk=None, by
 
 
 
-with open('/projects/0/prjs0809/Daniel/DSP/data/RC_2023-09.zst', 'rb') as file_handle:
+with open('/projects/0/prjs0809/Daniel/DSP/data/RC_2023-10.zst', 'rb') as file_handle:
 		buffer = ''
 		reader = zstandard.ZstdDecompressor(max_window_size=2**31).stream_reader(file_handle)
 		while True:
@@ -57,15 +61,12 @@ with open('/projects/0/prjs0809/Daniel/DSP/data/RC_2023-09.zst', 'rb') as file_h
 					continue
 				try:
 					data = json.loads(line)
+					
 					if data['subreddit'].lower() in subreddit_list:
-						posts.append(data)
+						if len(data['body'].split()) > 4 and len(data['body'].split()) < 40:
+							collection.insert_one(data)
+
 
 				except:
 					pass
-			if len(posts) > 30000:
-				break
 
-
-with open ('/projects/0/prjs0809/Daniel/DSP/data/posts.pickle', 'wb') as f:
-	pickle.dump(posts, f)
-	
