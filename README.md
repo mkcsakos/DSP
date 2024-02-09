@@ -5,6 +5,9 @@
 
 ***
 
+**The dashboard can be reached by clicking [here](https://drugwatchdsp.streamlit.app).**
+The application is stored in a separate repository [here](https://github.com/danielsz96/DSP_streamlit).
+
 ### Abstract
 
 This study addresses the global challenge of drug trafficking by harnessing open-source data from Reddit discussions to identify emerging drug trends, employing sentiment analysis and federated learning to enhance privacy and data security. By analyzing drug related comments for sentiment distribution and slang terminology, patterns are uncovered in drug use across various regions. The methodology includes data collection from drug-related subreddits, data cleaning, and processing with a focus on privacy-preserving techniques like federated learning, where a global model is trained across distributed datasets without sharing raw data. The research utilizes RoBERTa-base for sentiment analysis and develops a Streamlit interface for visualizing trends and analysis results. Feedback from user experience validation, including interactions with law enforcement, confirms the interface’s effectiveness. The findings reveal distinct sentiment distributions among different drug trends, highlighting the study’s practical implications for combating the illicit drug trade. This project not only contributes to academic discussions on drug trends but also demonstrates the potential of federated learning in sensitive data analysis, setting a precedent for future research in this area.
